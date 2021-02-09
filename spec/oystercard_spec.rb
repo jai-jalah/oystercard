@@ -23,4 +23,19 @@ describe Oystercard do
         subject.instance_variable_set(:@balance, 10)
         expect { subject.deduct(6) }.to change { subject.balance }.by(-6)
     end
+
+    context "touches in and out" do
+
+        it "touches in" do
+            subject.instance_variable_set(:@in_journey, false)
+            subject.touch_in
+            expect(subject.in_journey?).to eq true
+        end
+
+        it "touches out" do
+            subject.instance_variable_set(:@in_journey, true)
+            subject.touch_out
+            expect(subject.in_journey?).to eq false
+        end
+    end
 end
