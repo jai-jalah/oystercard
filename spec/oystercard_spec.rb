@@ -23,4 +23,25 @@ describe Oystercard do
         subject.instance_variable_set(:@balance, 10)
         expect { subject.deduct(6) }.to change { subject.balance }.by(-6)
     end
+
+    context "touches in and out" do
+        it "is not in a journey initially" do
+            expect(Oystercard.new().in_journey?).to eq false
+        end
+
+        before (:each) do
+            subject.instance_variable_set(:@in_journey, false)
+        end
+
+        it "touches in" do
+            subject.touch_in
+            expect(subject.in_journey?).to eq true
+        end
+
+        it "touches out" do
+            subject.touch_in
+            subject.touch_out
+            expect(subject.in_journey?).to eq false
+        end
+    end
 end
