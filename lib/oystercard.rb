@@ -1,3 +1,1 @@
-describe Oystercard do
 
-end
