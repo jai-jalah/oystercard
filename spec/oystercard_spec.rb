@@ -10,11 +10,11 @@ describe Oystercard do
         expect { subject.top_up(5) }.to change { subject.balance }.by(5)
     end
 
-    it "default maximum balance is £90" do
+    it "should default maximum balance to £90" do
         expect(Oystercard::MAXIMUM_BALANCE).to eq 90
     end
 
-    it 'should raise error when deposit exceed maximum amount' do
+    it 'should raise an error when deposit exceed maximum amount' do
         subject.instance_variable_set(:@balance, Oystercard::MAXIMUM_BALANCE)
         expect { subject.top_up(1) }.to raise_error("Balance cannot exceed maximum of £#{Oystercard::MAXIMUM_BALANCE}")
     end
