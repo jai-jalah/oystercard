@@ -18,4 +18,9 @@ describe Oystercard do
         subject.instance_variable_set(:@balance, Oystercard::MAXIMUM_BALANCE)
         expect { subject.top_up(1) }.to raise_error("Balance cannot exceed maximum of £#{Oystercard::MAXIMUM_BALANCE}")
     end
+
+    it 'should deduct the given amount from the fare' do
+        subject.instance_variable_set(:@balance, 10)
+        expect { subject.deduct(6) }.to change { subject.balance }.by(-6)
+    end
 end
