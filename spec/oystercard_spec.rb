@@ -11,25 +11,21 @@ describe Oystercard do
     end
 
     it "should default maximum balance to £90" do
-        expect(Oystercard::MAXIMUM_BALANCE).to eq 90
+        expect(Oystercard::MAX_BALANCE).to eq 90
     end
 
-    it 'should raise an error when deposit exceed maximum amount' do
-        subject.instance_variable_set(:@balance, Oystercard::MAXIMUM_BALANCE)
-        expect { subject.top_up(1) }.to raise_error("Balance cannot exceed maximum of £#{Oystercard::MAXIMUM_BALANCE}")
+    it 'should raise an error when deposit exceeds maximum amount' do
+        subject.instance_variable_set(:@balance, Oystercard::MAX_BALANCE)
+        expect { subject.top_up(1) }.to raise_error("Balance cannot exceed maximum of £#{Oystercard::MAX_BALANCE}")
     end
 
-    it 'should deduct the given amount from the fare' do
-        subject.instance_variable_set(:@balance, 10)
-        expect { subject.deduct(6) }.to change { subject.balance }.by(-6)
+    it "should not be in a journey at beginning" do
+        expect(Oystercard.new().in_journey?).to eq false
     end
 
     context "touches in and out" do
-        it "is not in a journey initially" do
-            expect(Oystercard.new().in_journey?).to eq false
-        end
-
-        before (:each) do
+        before do
+            subject.top_up(1)
             subject.instance_variable_set(:@in_journey, false)
         end
 
@@ -43,5 +39,19 @@ describe Oystercard do
             subject.touch_out
             expect(subject.in_journey?).to eq false
         end
+    end
+
+    it 'should set minimum amount to £1' do
+        expect(Oystercard::MIN_FARE).to eq 1
+    end
+
+    it 'should raise an error if user tries to touch in with a balance less than MIN_FARE' do
+        expect { subject.touch_in }.to raise_error("Insufficient balance on card")
+    end
+
+    it 'should deduct MIN_FARE when user touches out' do
+        subject.top_up(Oystercard::MIN_FARE)
+        subject.touch_in
+        expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MIN_FARE)
     end
 end
