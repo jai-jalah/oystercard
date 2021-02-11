@@ -23,14 +23,14 @@ describe Oystercard do
         expect(Oystercard.new().in_journey?).to eq false
     end
 
-    context "touches in and out" do
+    describe "touches in and out" do
         before do
             subject.top_up(1)
-            subject.instance_variable_set(:@in_journey, false)
+            # subject.instance_variable_set(:in_journey?, false)
         end
 
         it "touches in" do
-            subject.touch_in
+            subject.touch_in()
             expect(subject.in_journey?).to eq true
         end
 
@@ -41,7 +41,7 @@ describe Oystercard do
         end
     end
 
-    it 'should set minimum amount to £1' do
+    it 'should set minimum fare to £1' do
         expect(Oystercard::MIN_FARE).to eq 1
     end
 
@@ -54,4 +54,21 @@ describe Oystercard do
         subject.touch_in
         expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MIN_FARE)
     end
+
+    describe 'for user journey' do
+        before do
+            subject.top_up(Oystercard::MIN_FARE)
+            subject.touch_in("waterloo")
+        end
+
+        it 'should remember the entry station after touch_in' do
+            expect(subject.entry_station).to eq :waterloo
+        end
+
+        it 'when touched out - should set entry_station to nil' do
+            subject.touch_out
+            expect(subject.entry_station).to be_nil
+        end
+    end
+
 end
