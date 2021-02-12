@@ -26,7 +26,6 @@ describe Oystercard do
     describe "touches in and out" do
         before do
             subject.top_up(1)
-            # subject.instance_variable_set(:in_journey?, false)
         end
 
         it "touches in" do
@@ -55,20 +54,43 @@ describe Oystercard do
         expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MIN_FARE)
     end
 
-    describe 'for user journey' do
+   context 'for user journey' do
         before do
             subject.top_up(Oystercard::MIN_FARE)
             subject.touch_in("waterloo")
+            subject.touch_out("bank")
         end
+        # let(:exit_station){ subject.touch_out("bank") }
 
-        it 'should remember the entry station after touch_in' do
-            expect(subject.entry_station).to eq :waterloo
-        end
+        # it 'should remember the entry station after touch_in' do
+        #     expect(subject.entry_station).to eq :waterloo
+        # end
 
         it 'when touched out - should set entry_station to nil' do
             subject.touch_out
             expect(subject.entry_station).to be_nil
         end
-    end
 
+        it 'should return an array of stored trips' do
+            expect(subject.show_trips).to be_a(Array)
+        end
+
+        it 'should store entry_station in show_trips' do
+            expect(subject.show_trips[0]).to include("entry" => :waterloo)
+        end
+
+        it { is_expected.to respond_to(:touch_out).with(1).argument }
+
+        it 'should remember the exit station after touch_out' do
+            expect(subject.exit_station).to eq :bank
+        end
+
+        it 'should store exit_station in show_trips' do
+            expect(subject.show_trips[0]).to include("exit" => :bank)
+        end
+
+        it 'should store the first journey in a hash' do
+            expect(subject.show_trips[0]).to eq({ "entry" => :waterloo, "exit" => :bank })
+        end
+    end
 end

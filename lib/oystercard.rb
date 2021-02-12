@@ -1,12 +1,15 @@
+require_relative 'station'
+
 class Oystercard
     DEFAULT_BALANCE = 0
     MAX_BALANCE = 90
     MIN_FARE = 1
 
-    attr_reader :balance, :deduct, :entry_station
+    attr_reader :balance, :deduct, :entry_station, :exit_station, :show_trips, :each_trip
 
     def initialize(balance = DEFAULT_BALANCE)
         @balance = balance
+        @show_trips = []
     end
 
     def top_up(amount)
@@ -19,8 +22,10 @@ class Oystercard
         @entry_station = entry_station.to_sym
     end
 
-    def touch_out
+    def touch_out(exit_station = "default")
         deduct(MIN_FARE)
+        @exit_station = exit_station.to_sym
+        show_trips << { "entry" => @entry_station, "exit" => @exit_station}
         @entry_station = nil
     end
 
