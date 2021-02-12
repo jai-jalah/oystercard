@@ -11,7 +11,7 @@ I can test-drive my code
     Tested software is easier to change because you can tell when it's broken just by running a command, even the tricky edge cases.
 
 I can build with objects
-    Most code in the world is structured in small pieces called objects. This is done because it is easier to change than having everything in one place.
+    '''Most code in the world is structured in small pieces called objects. This is done because it is easier to change than having everything in one place.'''
 
 ## Tech/frameworks used ##
 Ruby, Agile, TDD & RSpec
