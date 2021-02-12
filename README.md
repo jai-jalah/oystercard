@@ -4,13 +4,13 @@ This week's challenge started with going back over the basics we covered last we
 
 # Wider Course goals that this project contributed toward #
 
-I write code that is easy to change
+I write code that is easy to change\n
     >> Writing easy to change software is highly prized amongst developers and employers. By developers because most of a developer's time is spent changing software. By employers because their teams can deliver value to customers faster.
 
-I can test-drive my code
+I can test-drive my code\n
     >> Tested software is easier to change because you can tell when it's broken just by running a command, even the tricky edge cases.
 
-I can build with objects
+I can build with objects\n
     >> Most code in the world is structured in small pieces called objects. This is done because it is easier to change than having everything in one place.
 
 ## Tech/frameworks used ##
